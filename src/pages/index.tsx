@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Header from "../components/Header";
 import Link from "next/link";
 import Cards from '../components/Card'
 import Grid from '@mui/material/Unstable_Grid2';
@@ -10,17 +9,16 @@ export default function Home() {
 
   return (
     <main>
-      <Header />
       {user ?
         (
           <div className="mt-20 exsm:mx-8">
             <Box sx={{ flexWrap: 'wrap' }}>
               <Grid container spacing={12} justifyContent="center">
                 <Grid>
-                  <Cards content="Answer questions and gain points" heading="Quiz Game" points={10} UrlLink="#test" ImgUrl="quiz.jpg"/>
+                  <Cards content="Answer questions and gain points" heading="Quiz Game" points={10} UrlLink="/quiz" ImgUrl="quiz.jpg"/>
                 </Grid>
                 <Grid>
-                  <Cards content="Pop balloons and gain points" heading="Balloon Game" points={10} UrlLink="#test" ImgUrl="balloon.jpg"/>
+                  <Cards content="Pop balloons and gain points" heading="Balloon Game" points={10} UrlLink="/balloon" ImgUrl="balloon.jpg"/>
                 </Grid>
               </Grid>
             </Box>
