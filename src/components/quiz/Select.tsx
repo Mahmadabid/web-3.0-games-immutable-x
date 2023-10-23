@@ -2,28 +2,23 @@ import * as React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import { SelectTypes } from '//types/type';
 
-export default function SelectFrom({Label, Options}: SelectTypes) {
-  const [Value, setValue] = React.useState('');
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setValue(event.target.value);
-  };
+export default function SelectFrom({ Label, Options, value, onChange }: SelectTypes) {
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 140 }}>
+    <FormControl sx={{ m: 1, minWidth: 200 }} required size='medium'>
       <InputLabel id={Label}>{Label.toUpperCase()}</InputLabel>
       <Select
         labelId={Label}
         id={Label}
-        value={Value}
+        value={value}
         label={Label}
-        onChange={handleChange}
+        onChange={onChange}
       >
         {Object.entries(Options).map(([key, displayValue]) => {
-            return <MenuItem key={key} value={key}>{displayValue}</MenuItem>
+          return <MenuItem key={key} value={key}>{displayValue}</MenuItem>
         })}
       </Select>
     </FormControl>
