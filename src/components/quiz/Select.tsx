@@ -8,7 +8,7 @@ import { SelectTypes } from '//types/type';
 export default function SelectFrom({ Label, Options, value, onChange }: SelectTypes) {
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 200 }} required size='medium'>
+    <FormControl variant="filled" sx={{ m: 1, minWidth: 200 }} required size='small'>
       <InputLabel id={Label}>{Label.toUpperCase()}</InputLabel>
       <Select
         labelId={Label}

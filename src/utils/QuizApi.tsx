@@ -13,7 +13,7 @@ export const CategoryFetcher = async () => {
 export async function fetchQuizData(difficulty: string, types: string, category: number) {
     const fetchQuestions = await fetch(`https://opentdb.com/api.php?amount=10&category=${category}&difficulty=${difficulty}&type=${types}`);
     const data = await fetchQuestions.json();
-    return data.results.map((question: Questions) => (
+    return await data.results.map((question: Questions) => (
         {
             ...question,
             answers: shuffle([...question.incorrect_answers, question.correct_answer])

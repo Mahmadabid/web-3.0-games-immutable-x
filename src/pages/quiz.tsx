@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
-import { CategoryFetcher } from "../utils/QuizApi"
+import { CategoryFetcher, fetchQuizData } from "../utils/QuizApi"
 import SelectForm from "../components/quiz/Select";
-import { Button, ButtonProps, styled } from "@mui/material";
-import { CategoryObj } from "../types/type";
+import { Button, ButtonProps, SelectChangeEvent, styled } from "@mui/material";
+import { CategoryObj, Questions } from "../types/type";
 import { purple } from "@mui/material/colors";
+import Question from "../components/quiz/Question";
 
 const quiz = () => {
   const [categoryData, setCategoryData] = useState<CategoryObj>({});
-  const categoryIndex = [9, 10, 13, 18, 19, 21]
+  const categoryIndex = [8, 9, 13, 18, 19, 21]
   const relevantCategories: CategoryObj = {}
 
   const [categorySelector, setCategorySelector] = useState('');
@@ -15,16 +16,25 @@ const quiz = () => {
   const [typeSelector, setTypeSelector] = useState('');
   const [start, setStart] = useState(false);
 
+  const [questionData, setQuestionData] = useState<Questions[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [QuizLoading, setQuizLoading] = useState(true);
+
   const isValid = categorySelector.length > 0 && difficultySelector.length > 0 && typeSelector.length > 0;
 
-  const handleStart = () => {
+  const handleStart = async () => {
     setStart(true);
+    setLoading(true);
+    const questions = await fetchQuizData(difficultySelector, typeSelector, parseInt(categorySelector));
+    setQuestionData(questions);
+    setLoading(false);
   }
 
   useEffect(() => {
+    setQuizLoading(true);
     const fetchData = async () => {
       const allCategories = await CategoryFetcher();
-      const Categories = allCategories.trivia_categories;
+      const Categories = await allCategories.trivia_categories;
 
       categoryIndex.forEach(cat => {
         let obj = Categories[cat];
@@ -32,9 +42,11 @@ const quiz = () => {
       });
 
       setCategoryData(relevantCategories);
+      setQuizLoading(false);
     };
 
     fetchData();
+
   }, []);
 
   const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
@@ -53,17 +65,24 @@ const quiz = () => {
     <div className="text-center">
       {!start ?
         <>
-          <h2 className="text-2xl mt-10 mb-5">Lets Start the Quiz</h2>
-          <div className="flex flex-col items-center">
-            <SelectForm Label="category" Options={categoryData} value={categorySelector} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCategorySelector(e.target.value)} />
-            <SelectForm Label="difficulty" Options={{ 'easy': 'Easy', 'medium': 'Medium', 'hard': 'Hard' }} value={difficultySelector} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDifficultySelector(e.target.value)} />
-            <SelectForm Label="type" Options={{ 'multiple': 'Multiple Choice', 'boolean': "True/False" }} value={typeSelector} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTypeSelector(e.target.value)} />
-            {!isValid? <p className="text-xl text-red-600 mt-2">All Fields are required!</p>: null}
-            <div className="pt-2">
-              <ColorButton variant="contained" onClick={handleStart} size="large" disabled={!isValid}>Start Quiz</ColorButton>
+          {QuizLoading ? <div className=" mt-40 text-xl text-slate-500">Loading ...</div> : null}
+          {!QuizLoading ? <>
+            <h2 className="text-2xl mt-10 mb-5">Lets Start the Quiz</h2>
+            <div className="flex flex-col items-center text-left">
+              <SelectForm Label="category" Options={categoryData} value={categorySelector} onChange={(e: SelectChangeEvent<string>) => setCategorySelector(e.target.value)} />
+              <SelectForm Label="difficulty" Options={{ 'easy': 'Easy', 'medium': 'Medium', 'hard': 'Hard' }} value={difficultySelector} onChange={(e: SelectChangeEvent<string>) => setDifficultySelector(e.target.value)} />
+              <SelectForm Label="type" Options={{ 'multiple': 'Multiple Choice', 'boolean': "True/False" }} value={typeSelector} onChange={(e: SelectChangeEvent<string>) => setTypeSelector(e.target.value)} />
+              {!isValid ? <p className="text-md text-red-600 my-2">All Fields are required!</p> : null}
+              <div className="pt-2">
+                <ColorButton variant="contained" onClick={handleStart} size="large" disabled={!isValid}>Start Quiz</ColorButton>
+              </div>
             </div>
-          </div>
-        </> : <></>
+          </> : null}
+        </> :
+        <div>
+          {loading ? <div className=" mt-40 text-xl text-slate-500">Loading ...</div> : null}
+          {!loading && questionData ? <Question quizData={questionData} /> : null}
+        </div>
       }
     </div >
   )
