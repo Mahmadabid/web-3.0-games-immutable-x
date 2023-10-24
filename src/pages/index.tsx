@@ -2,23 +2,25 @@ import { useState } from "react";
 import Link from "next/link";
 import Cards from '../components/Card'
 import Grid from '@mui/material/Unstable_Grid2';
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 
 export default function Home() {
   const [user, setUser] = useState(true);
+  const matches = useMediaQuery('(max-width:680px)');
+  const Style = { backgroundSize: 'cover', backgroundRepeat: 'no-repeat', display: 'flex', alignItems: 'center', justifyContent: 'center' }
 
   return (
     <main>
       {user ?
         (
-          <div className="mt-20 exsm:mx-8">
+          <div className="text-center">
             <Box sx={{ flexWrap: 'wrap' }}>
-              <Grid container spacing={12} justifyContent="center">
-                <Grid>
-                  <Cards content="Answer questions and gain points" heading="Quiz Game" points={10} UrlLink="/quiz" ImgUrl="quiz.jpg"/>
+              <Grid container justifyContent="center">
+                <Grid xs={6} style={matches ? { ...Style, backgroundImage: 'url(/quiz.jpg)', height: 'calc(100vh - 60px)', width: '100%', minWidth: '340px' } : { ...Style, backgroundImage: 'url(/quiz.jpg)', height: 'calc(100vh - 72px)' }} >
+                  <Cards content="Answer questions and gain points" heading="Quiz Game" points={10} UrlLink="/quiz" />
                 </Grid>
-                <Grid>
-                  <Cards content="Pop balloons and gain points" heading="Balloon Game" points={10} UrlLink="/balloon" ImgUrl="balloon.jpg"/>
+                <Grid xs={6} style={matches ? { ...Style, backgroundImage: 'url(/balloon.jpg)', height: '100vh', width: '100%', minWidth: '340px' } : { ...Style, backgroundImage: 'url(/balloon.jpg)', height: 'calc(100vh - 72px)' }}>
+                  <Cards content="Pop balloons and gain points" heading="Balloon Game" points={10} UrlLink="/balloon" />
                 </Grid>
               </Grid>
             </Box>
