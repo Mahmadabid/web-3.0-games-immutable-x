@@ -16,10 +16,10 @@ export default function Home() {
           <div className="text-center">
             <Box sx={{ flexWrap: 'wrap' }}>
               <Grid container justifyContent="center">
-                <Grid xs={6} style={matches ? { ...Style, backgroundImage: 'url(/quiz.jpg)', height: 'calc(100vh - 60px)', width: '100%', minWidth: '340px' } : { ...Style, backgroundImage: 'url(/quiz.jpg)', height: 'calc(100vh - 72px)' }} >
+                <Grid id="quiz" xs={6} style={matches ? { ...Style, backgroundImage: 'url(/quiz.jpg)', height: '100vh', width: '100%', minWidth: '340px' } : { ...Style, backgroundImage: 'url(/quiz.jpg)', height: 'calc(100vh - 72px)' }} >
                   <Cards content="Answer questions and gain points" heading="Quiz Game" points={10} UrlLink="/quiz" />
                 </Grid>
-                <Grid xs={6} style={matches ? { ...Style, backgroundImage: 'url(/balloon.jpg)', height: '100vh', width: '100%', minWidth: '340px' } : { ...Style, backgroundImage: 'url(/balloon.jpg)', height: 'calc(100vh - 72px)' }}>
+                <Grid id="balloon" xs={6} style={matches ? { ...Style, backgroundImage: 'url(/balloon.jpg)', height: '100vh', width: '100%', minWidth: '340px' } : { ...Style, backgroundImage: 'url(/balloon.jpg)', height: 'calc(100vh - 72px)' }}>
                   <Cards content="Pop balloons and gain points" heading="Balloon Game" points={10} UrlLink="/balloon" />
                 </Grid>
               </Grid>
