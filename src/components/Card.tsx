@@ -12,11 +12,11 @@ interface CardProps {
 const Cards: React.FC<CardProps> = ({ content, heading, points, UrlLink }) => {
 
     return (
-        <div className='bg-white rounded p-2'>
+        <div className='bg-white rounded p-2 bg-opacity-70'>
             <Typography variant="h4" fontWeight={600} color="black">
                 {heading}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography fontWeight="bold" variant="body2" color="text.secondary">
                 {content}
             </Typography>
                 <Typography variant="h6" color="text.primary" gutterBottom>
