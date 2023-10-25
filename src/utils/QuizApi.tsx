@@ -20,3 +20,14 @@ export async function fetchQuizData(difficulty: string, types: string, category:
         }
     ))
 }
+
+export async function defaultQuizData() {
+    const fetchQuestions = await fetch('https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple');
+    const data = await fetchQuestions.json();
+    return await data.results.map((question: Questions) => (
+        {
+            ...question,
+            answers: shuffle([...question.incorrect_answers, question.correct_answer])
+        }
+    ))
+}

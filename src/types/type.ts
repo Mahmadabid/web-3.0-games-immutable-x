@@ -18,6 +18,7 @@ export type CategoryObj = {
 
 export type QuestionProp = {
     quizData: Questions[];
+    handleDefaultStart: () => Promise<void>;
 }
 
 export type Questions = {
@@ -34,15 +35,14 @@ export type QuestionCardProps = {
     QuizQuestions: Questions;
     questionNo: number;
     setAnswered: (value: React.SetStateAction<boolean>) => void;
-    setPoints: (value: React.SetStateAction<number>) => void;
     Disabled: boolean;
     setDisabled: (value: React.SetStateAction<boolean>) => void;
-    selectedAnswer: string | null
+    selectedAnswer: string | null;
     setSelectedAnswer: (value: React.SetStateAction<string | null>) => void;
 }
 
 export type AnswerState = 'correct' | 'incorrect' | 'none';
 
-export type ResultProps = {
-    points: number
+export type BalloonProps = {
+    color: string;
 }

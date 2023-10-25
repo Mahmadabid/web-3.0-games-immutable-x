@@ -1,14 +1,20 @@
-import { useState, useEffect } from "react";
-import { CategoryFetcher, fetchQuizData } from "../utils/QuizApi"
+import { useState, useEffect, useContext } from "react";
+import { CategoryFetcher, defaultQuizData, fetchQuizData } from "../utils/QuizApi"
 import SelectForm from "../components/quiz/Select";
 import { Button, ButtonProps, SelectChangeEvent, styled } from "@mui/material";
 import { CategoryObj, Questions } from "../types/type";
 import { purple } from "@mui/material/colors";
 import Question from "../components/quiz/Question";
+import { UserContext } from "../utils/Context";
+import router from "next/router";
+import Login from "../components/Login";
 
 const quiz = () => {
+
+  const User = useContext(UserContext);
+
   const [categoryData, setCategoryData] = useState<CategoryObj>({});
-  const categoryIndex = [8, 9, 13, 18, 19, 21]
+  const categoryIndex = [8, 9, 10, 13, 18, 19, 21]
   const relevantCategories: CategoryObj = {}
 
   const [categorySelector, setCategorySelector] = useState('');
@@ -26,6 +32,14 @@ const quiz = () => {
     setStart(true);
     setLoading(true);
     const questions = await fetchQuizData(difficultySelector, typeSelector, parseInt(categorySelector));
+    setQuestionData(questions);
+    setLoading(false);
+  }
+
+  const handleDefaultStart = async () => {
+    setStart(true);
+    setLoading(true);
+    const questions = await defaultQuizData();
     setQuestionData(questions);
     setLoading(false);
   }
@@ -63,27 +77,29 @@ const quiz = () => {
 
   return (
     <div className="text-center">
-      {!start ?
-        <>
-          {QuizLoading ? <div className=" mt-40 text-xl text-slate-500">Loading ...</div> : null}
-          {!QuizLoading ? <>
-            <h2 className="text-2xl mt-10 mb-5">Lets Start the Quiz</h2>
-            <div className="flex flex-col items-center text-left">
-              <SelectForm Label="category" Options={categoryData} value={categorySelector} onChange={(e: SelectChangeEvent<string>) => setCategorySelector(e.target.value)} />
-              <SelectForm Label="difficulty" Options={{ 'easy': 'Easy', 'medium': 'Medium', 'hard': 'Hard' }} value={difficultySelector} onChange={(e: SelectChangeEvent<string>) => setDifficultySelector(e.target.value)} />
-              <SelectForm Label="type" Options={{ 'multiple': 'Multiple Choice', 'boolean': "True/False" }} value={typeSelector} onChange={(e: SelectChangeEvent<string>) => setTypeSelector(e.target.value)} />
-              {!isValid ? <p className="text-md text-red-600 my-2">All Fields are required!</p> : null}
-              <div className="pt-2">
-                <ColorButton variant="contained" onClick={handleStart} size="large" disabled={!isValid}>Start Quiz</ColorButton>
-              </div>
+      {
+        User[0] ?
+          !start ?
+            <>
+              {QuizLoading ? <div className=" mt-40 text-xl text-slate-500">Loading ...</div> : null}
+              {!QuizLoading ? <>
+                <h2 className="text-2xl mt-10 mb-5">Lets Start the Quiz</h2>
+                <div className="flex flex-col items-center text-left">
+                  <SelectForm Label="category" Options={categoryData} value={categorySelector} onChange={(e: SelectChangeEvent<string>) => setCategorySelector(e.target.value)} />
+                  <SelectForm Label="difficulty" Options={{ 'easy': 'Easy', 'medium': 'Medium', 'hard': 'Hard' }} value={difficultySelector} onChange={(e: SelectChangeEvent<string>) => setDifficultySelector(e.target.value)} />
+                  <SelectForm Label="type" Options={{ 'multiple': 'Multiple Choice', 'boolean': "True/False" }} value={typeSelector} onChange={(e: SelectChangeEvent<string>) => setTypeSelector(e.target.value)} />
+                  {!isValid ? <p className="text-md text-red-600 my-2">All Fields are required!</p> : null}
+                  <div className="pt-2">
+                    <ColorButton variant="contained" onClick={handleStart} size="large" disabled={!isValid}>Start Quiz</ColorButton>
+                  </div>
+                </div>
+              </> : null}
+            </> :
+            <div>
+              {loading ? <div className=" mt-40 text-xl text-slate-500">Loading ...</div> : null}
+              {!loading && questionData ? <Question quizData={questionData} handleDefaultStart={handleDefaultStart} /> : null}
             </div>
-          </> : null}
-        </> :
-        <div>
-          {loading ? <div className=" mt-40 text-xl text-slate-500">Loading ...</div> : null}
-          {!loading && questionData ? <Question quizData={questionData} /> : null}
-        </div>
-      }
+          : <Login />}
     </div >
   )
 }
