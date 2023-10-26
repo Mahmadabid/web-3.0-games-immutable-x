@@ -1,9 +1,10 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import { QuestionProp } from "//types/type"
 import { Button, ButtonProps, styled } from "@mui/material"
 import { purple } from "@mui/material/colors"
 import QuestionCard from "./QuestionCard"
-import Result from "./Result"
+import Result from "../Result"
+import { QuizPointsContext } from "../../utils/Context"
 
 const Question: React.FC<QuestionProp> = ({ quizData, handleDefaultStart }) => {
 
@@ -17,12 +18,13 @@ const Question: React.FC<QuestionProp> = ({ quizData, handleDefaultStart }) => {
   const [questionNo, setQuestionNo] = useState(0);
 
   const QuizQuestions = quizData[questionNo];
+  const QuizPoints = useContext(QuizPointsContext)
 
   const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
     color: `${theme.palette.getContrastText(purple[500])} !important`,
     backgroundColor: `${purple[500]} !important`,
     '&:hover': {
-      backgroundColor: purple[700],
+      backgroundColor: `${purple[700]} !important`,
     },
     '&.Mui-disabled': {
       backgroundColor: '#E0E0E0 !important',
@@ -60,7 +62,7 @@ const Question: React.FC<QuestionProp> = ({ quizData, handleDefaultStart }) => {
             <QuestionCard QuizQuestions={QuizQuestions} questionNo={questionNo} setAnswered={setAnswered} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} Disabled={Disabled} setDisabled={setDisabled} />
             <ColorButton onClick={handleSubmit} variant="contained" disabled={!answered}>{finalAnswer ? <>Finish</> : <>Next Question</>}</ColorButton>
           </> :
-          <Result />
+          <Result Points={QuizPoints[0]}/>
 
       }
     </>

@@ -43,6 +43,12 @@ export type QuestionCardProps = {
 
 export type AnswerState = 'correct' | 'incorrect' | 'none';
 
-export type BalloonProps = {
+export type ResultProps = {
+    Points: number;
+}
+
+export type BalloonGeneration = {
+    top: string;
+    left: string;
     color: string;
 }
