@@ -93,7 +93,7 @@ const Balloon = () => {
                 :
                 <div className="text-center mt-10">
                     <h1 className="text-xl font-bold text-slate-800">Time: <span className="text-slate-600">{count}</span></h1>
-                    {positions.map((position: { top: string; left: string; color: string; }, key: number) => (
+                    {positions.map((position: BalloonGeneration, key: number) => (
                         <BalloonIcon onClick={handleClick} key={key} sx={{ fontSize: 150, position: "absolute", top: position.top, left: position.left, color: position.color }} />
                     ))}
                 </div>
