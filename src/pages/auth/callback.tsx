@@ -1,13 +1,12 @@
-import { useContext, useEffect } from "react"
-import { PassportContext } from "../../utils/Context";
+import { useEffect } from "react"
 import { useAuthentication } from '../../utils/user/userAuthentication'
 
 const Callback = () => {
     const { handleLoginCallback } = useAuthentication();
-    
+
     useEffect(() => {
-        async function finalizeLoginCallback() {
-            await handleLoginCallback();
+        function finalizeLoginCallback() {
+            handleLoginCallback();
             // Notify the main window
             window.opener?.postMessage({ type: 'authSuccess' }, '*');
             // Close this pop-up

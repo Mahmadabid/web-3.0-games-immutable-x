@@ -12,16 +12,6 @@ const Header = () => {
     const matches = useMediaQuery('(max-width:680px)');
     const router = useRouter();
     const [User, setUser] = useContext(UserContext);
-    
-    useEffect(() => {
-        function handleMessage(event: MessageEvent) {
-            if (event.data.type === 'authSuccess') {
-                setUser(true);
-            }
-        }
-        window.addEventListener("message", handleMessage);
-        return () => window.removeEventListener("message", handleMessage);
-    }, []);
 
     return (
         <>

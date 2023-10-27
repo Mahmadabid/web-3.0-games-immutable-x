@@ -4,7 +4,8 @@ import { ethers } from "ethers";
 
 export const useAuthentication = () => {
     const User = useContext(UserContext);
-    const passport = useContext(PassportContext)[0];
+    const passportProvider = useContext(PassportContext);
+    const passport = passportProvider[0];
 
     const logIn = async () => {
         if (!passport) return;
@@ -19,10 +20,12 @@ export const useAuthentication = () => {
 
             // const redprovider = passport.connectEvm();
             // const redaccounts = await redprovider.request({ method: "eth_requestAccounts" });
-            console.log(await passport.getUserInfo(), 'hi')
+            // console.log(await passport.getUserInfo(), 'hi')
+            // console.log('111', redaccounts)
+            console.log(222, signer)
+            console.log(333, address)
+            console.log(444, accounts)
             
-            User[1](true);
-
         } catch (error: any) {
             console.error("Login error:", error.message || error);
         }
@@ -33,7 +36,7 @@ export const useAuthentication = () => {
         User[1](false);
     };
 
-    const handleLoginCallback = async () => {
+    const handleLoginCallback = () => {
         if (passport) {
             passport.loginCallback();
         } else {
