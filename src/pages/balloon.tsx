@@ -1,11 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext,  useState } from "react";
 import Login from "../components/Login";
 import { UserContext } from "../utils/Context";
-import Balloon from "../components/balloon/Balloon";
 import { Button, ButtonProps, styled } from "@mui/material";
 import { purple } from "@mui/material/colors";
 
-const balloon = () => {
+const Balloon = () => {
 
   const User = useContext(UserContext);
   const [start, setStart] = useState(false);
@@ -36,4 +35,4 @@ const balloon = () => {
   )
 }
 
-export default balloon
+export default Balloon

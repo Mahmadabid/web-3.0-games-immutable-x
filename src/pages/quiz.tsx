@@ -8,7 +8,7 @@ import Question from "../components/quiz/Question";
 import { UserContext } from "../utils/Context";
 import Login from "../components/Login";
 
-const quiz = () => {
+const Quiz = () => {
 
   const User = useContext(UserContext);
 
@@ -102,4 +102,4 @@ const quiz = () => {
   )
 }
 
-export default quiz
+export default Quiz

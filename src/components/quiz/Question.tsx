@@ -51,7 +51,7 @@ const Question: React.FC<QuestionProp> = ({ quizData, handleDefaultStart }) => {
       {!quizData || quizData.length === 0 ?
         <div>
           <p className="text-2xl mt-20 mb-2 text-red-700 font-bold">Sorry for incovenience!</p>
-          <p className="mx-2">Please Change the category, difficulty or type. This one doesn't have any data.</p>
+          <p className="mx-2">Please Change the category, difficulty or type. This one does not have any data.</p>
           <Button style={{marginTop: 16}} color="primary" variant="contained" href="/quiz" size="large">Select Again</Button>
           <br/>
           <Button onClick={handleDefaultStart} style={{marginTop: 16}} color="secondary" variant="contained" size="large">Start with default Quiz</Button>

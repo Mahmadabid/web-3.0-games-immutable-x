@@ -5,7 +5,7 @@ import BalloonIcon from "./BalloonIcon";
 import { blue, red, yellow, green, orange } from '@mui/material/colors'
 import { BalloonGeneration } from "//types/type";
 
-const Balloon = () => {
+const Balloons = () => {
 
     const BalloonPoints = useContext(BalloonPointsContext);
     const [gameOver, setGameOver] = useState(false);
@@ -89,7 +89,7 @@ const Balloon = () => {
                 <div className="text-center">
                     <Result Points={BalloonPoints[0]} />
                 </div> :
-                <div className=" mt-40 text-xl text-slate-500">Loading ...</div> 
+                <div className=" mt-40 text-xl text-slate-500">Loading ...</div>
                 :
                 <div className="text-center mt-10">
                     <h1 className="text-xl font-bold text-slate-800">Time: <span className="text-slate-600">{count}</span></h1>
@@ -98,8 +98,8 @@ const Balloon = () => {
                     ))}
                 </div>
             }
-            </>
+        </>
     )
 }
 
-            export default Balloon
+export default Balloons;
