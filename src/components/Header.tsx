@@ -4,7 +4,7 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import { useRouter } from 'next/router';
 import { useAuthentication } from '../utils/user/userAuthentication';
 import { useContext, useEffect } from 'react';
-import { PassportContext, UserContext } from '../utils/Context';
+import { UserContext } from '../utils/Context';
 
 const Header = () => {
 
@@ -12,11 +12,11 @@ const Header = () => {
     const matches = useMediaQuery('(max-width:680px)');
     const router = useRouter();
     const [User, setUser] = useContext(UserContext);
-    
+
     useEffect(() => {
         function handleAuthSuccess() {
             setUser(true);
-            // Further logic, if required
+
         }
     
         window.addEventListener('message', (event) => {

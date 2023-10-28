@@ -14,10 +14,10 @@ function App({ Component, pageProps }: AppProps) {
     const [passport, setPassport] = useState<passport.Passport | null>(null);
 
     useEffect(() => {
-        const userData = localStorage.getItem(`oidc.user:https://auth.immutable.com:${process.env.NEXT_PUBLIC_CLIENT_ID}`);
-        if (userData) {
-            setUser(true);
-        }
+        // const userData = localStorage.getItem(`oidc.user:https://auth.immutable.com:${process.env.NEXT_PUBLIC_CLIENT_ID}`);
+        // if (userData) {
+        //     setUser(true);
+        // }
 
         function initializePassport() {
             const instance = createPassportInstance();
