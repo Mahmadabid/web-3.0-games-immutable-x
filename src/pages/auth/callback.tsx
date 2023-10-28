@@ -33,7 +33,7 @@ const Callback = () => {
         finalizeAuthentication();
     }, [Log]);
 
-    return <div>Callback</div>;
+    return <div>Processing...</div>;
 }
 
 export default Callback;
