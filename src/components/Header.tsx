@@ -12,7 +12,25 @@ const Header = () => {
     const matches = useMediaQuery('(max-width:680px)');
     const router = useRouter();
     const [User, setUser] = useContext(UserContext);
-
+    
+    useEffect(() => {
+        function handleAuthSuccess() {
+            setUser(true);
+            // Further logic, if required
+        }
+    
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'authSuccess') {
+                handleAuthSuccess();
+            }
+        });
+    
+        return () => {
+            window.removeEventListener('message', handleAuthSuccess);
+        };
+    }, []);
+    
+    
     return (
         <>
             <header className="bg-black p-4 xsm:px-0 text-white shadow-md relative flex items-center">
