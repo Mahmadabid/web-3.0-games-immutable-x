@@ -3,11 +3,10 @@ import React from "react";
 import Confetti from "react-confetti";
 import { ResultProps } from "//types/type";
 import { useRouter } from "next/router";
-
-const Result:React.FC<ResultProps> = ({ Points }) => {
+const Result: React.FC<ResultProps> = ({ Points }) => {
 
   const router = useRouter();
-  const Percent = (Points/ 10) * 100;
+  const Percent = (Points / 10) * 100;
 
   return (
     <div>

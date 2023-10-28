@@ -5,7 +5,7 @@ import { Button, ButtonProps, SelectChangeEvent, styled } from "@mui/material";
 import { CategoryObj, Questions } from "../types/type";
 import { purple } from "@mui/material/colors";
 import Question from "../components/quiz/Question";
-import { UserContext } from "../utils/Context";
+import { BalloonPointsContext, QuizPointsContext, UserContext, UserInfoContext } from "../utils/Context";
 import Login from "../components/Login";
 
 const Quiz = () => {
@@ -26,6 +26,35 @@ const Quiz = () => {
   const [QuizLoading, setQuizLoading] = useState(true);
 
   const isValid = categorySelector.length > 0 && difficultySelector.length > 0 && typeSelector.length > 0;
+
+  const QuizPoints = useContext(QuizPointsContext)
+  const BalloonPoints = useContext(BalloonPointsContext);
+  const UserInfo = useContext(UserInfoContext)
+
+  const fetchData = async () => {
+    const url = `/api/data?userId=${UserInfo[0]?.profile?.sub}`;
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data && data.entries && data.entries.length > 0) {
+        const { quiz = {}, balloon = {} } = data.entries[0].data || {};
+        QuizPoints[1](quiz.points || 0);
+        BalloonPoints[1](balloon.points || 0);
+      } else {
+        QuizPoints[1](0)
+        BalloonPoints[1]((0))
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (UserInfo[0]) {
+      fetchData();
+    }
+  }, [UserInfo[0]])
 
   const handleStart = async () => {
     setStart(true);
@@ -82,7 +111,7 @@ const Quiz = () => {
             <>
               {QuizLoading ? <div className=" mt-40 text-xl text-slate-500">Loading ...</div> : <>
                 <h2 className="text-2xl mt-10 mb-5 px-2">Lets Start the Quiz</h2>
-                <p className="px-2 mb-7 text-slate-500">For each balloon you pop, you get 1 point.</p>
+                <p className="px-2 mb-7 text-slate-500">For each quiz you answer correct, you get 1 point.</p>
                 <div className="flex flex-col items-center text-left">
                   <SelectForm Label="category" Options={categoryData} value={categorySelector} onChange={(e: SelectChangeEvent<string>) => setCategorySelector(e.target.value)} />
                   <SelectForm Label="difficulty" Options={{ 'easy': 'Easy', 'medium': 'Medium', 'hard': 'Hard' }} value={difficultySelector} onChange={(e: SelectChangeEvent<string>) => setDifficultySelector(e.target.value)} />

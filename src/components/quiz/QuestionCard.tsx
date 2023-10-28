@@ -1,18 +1,14 @@
 import { Button, ButtonProps, styled } from "@mui/material"
-import { QuestionCardProps } from "//types/type";
+import { QuestionCardProps } from "../../types/type";
 import { CSSProperties } from "@mui/material/styles/createMixins";
-import { useContext } from "react";
-import { QuizPointsContext } from "../../utils/Context";
 
-const QuestionCard = ({ QuizQuestions, questionNo, setAnswered, Disabled, setDisabled, selectedAnswer, setSelectedAnswer }: QuestionCardProps) => {
-
-    const QuizPoints = useContext(QuizPointsContext)
+const QuestionCard = ({ setQuizPoints, QuizQuestions, questionNo, setAnswered, Disabled, setDisabled, selectedAnswer, setSelectedAnswer }: QuestionCardProps) => {
 
     const handleAnswer = (value: string) => {
         setDisabled(true);
         setAnswered(true);
         setSelectedAnswer(value);
-        value === QuizQuestions.correct_answer ? QuizPoints[1](points => points + 1) : null;
+        value === QuizQuestions.correct_answer ? setQuizPoints(points => points + 1) : null;
     };
 
     const ColorButton = styled(Button)<ButtonProps>(() => ({

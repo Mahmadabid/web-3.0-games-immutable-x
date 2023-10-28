@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react"
-import { QuestionProp } from "//types/type"
+import React, { useContext, useEffect, useState } from "react"
+import { QuestionProp } from "../../types/type"
 import { Button, ButtonProps, styled } from "@mui/material"
 import { purple } from "@mui/material/colors"
 import QuestionCard from "./QuestionCard"
 import Result from "../Result"
-import { QuizPointsContext } from "../../utils/Context"
+import { WebEntryData } from "../../types/auth"
+import { UserInfoContext, QuizPointsContext, BalloonPointsContext } from "../../utils/Context"
 
 const Question: React.FC<QuestionProp> = ({ quizData, handleDefaultStart }) => {
 
@@ -12,13 +13,16 @@ const Question: React.FC<QuestionProp> = ({ quizData, handleDefaultStart }) => {
   const [finalAnswer, setFinalAnswer] = useState(false);
   const [Disabled, setDisabled] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const UserInfo = useContext(UserInfoContext);
+  const QuizPoints = useContext(QuizPointsContext);
+  const BalloonPoints = useContext(BalloonPointsContext);
 
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
   const [questionNo, setQuestionNo] = useState(0);
 
   const QuizQuestions = quizData[questionNo];
-  const QuizPoints = useContext(QuizPointsContext)
+  const [Points, setPoints] = useState(0);
 
   const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
     color: `${theme.palette.getContrastText(purple[500])} !important`,
@@ -37,6 +41,7 @@ const Question: React.FC<QuestionProp> = ({ quizData, handleDefaultStart }) => {
     setDisabled(false);
     setSelectedAnswer(null);
     if (questionNo === 9) {
+      QuizPoints[1](prev => prev + Points)
       setGameOver(true);
     } else if (questionNo === 8) {
       setFinalAnswer(true);
@@ -46,23 +51,54 @@ const Question: React.FC<QuestionProp> = ({ quizData, handleDefaultStart }) => {
     }
   }
 
+  useEffect(() => {
+    if (gameOver) {
+      const dataToSend: WebEntryData = {
+        userId: UserInfo[0]?.profile?.sub || '',
+        data: {
+          quiz: {
+            points: QuizPoints[0]
+          },
+          balloon: {
+            points: BalloonPoints[0]
+          }
+        }
+      }
+
+      const sendForm = async () => {
+        try {
+          const response = await fetch('/api/data', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dataToSend)
+          });
+          if (!response.ok) throw new Error('Failed to save data');
+
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      };
+      sendForm()
+    }
+  }, [gameOver])
+
   return (
     <>
       {!quizData || quizData.length === 0 ?
         <div>
           <p className="text-2xl mt-20 mb-2 text-red-700 font-bold">Sorry for incovenience!</p>
           <p className="mx-2">Please Change the category, difficulty or type. This one does not have any data.</p>
-          <Button style={{marginTop: 16}} color="primary" variant="contained" href="/quiz" size="large">Select Again</Button>
-          <br/>
-          <Button onClick={handleDefaultStart} style={{marginTop: 16}} color="secondary" variant="contained" size="large">Start with default Quiz</Button>
+          <Button style={{ marginTop: 16 }} color="primary" variant="contained" href="/quiz" size="large">Select Again</Button>
+          <br />
+          <Button onClick={handleDefaultStart} style={{ marginTop: 16 }} color="secondary" variant="contained" size="large">Start with default Quiz</Button>
         </div>
         :
         !gameOver ?
           <>
-            <QuestionCard QuizQuestions={QuizQuestions} questionNo={questionNo} setAnswered={setAnswered} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} Disabled={Disabled} setDisabled={setDisabled} />
+            <QuestionCard setQuizPoints={setPoints} QuizQuestions={QuizQuestions} questionNo={questionNo} setAnswered={setAnswered} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} Disabled={Disabled} setDisabled={setDisabled} />
             <ColorButton onClick={handleSubmit} variant="contained" disabled={!answered}>{finalAnswer ? <>Finish</> : <>Next Question</>}</ColorButton>
           </> :
-          <Result Points={QuizPoints[0]}/>
+          <Result Points={Points} />
 
       }
     </>

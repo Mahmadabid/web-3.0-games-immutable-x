@@ -1,4 +1,5 @@
 import { SelectChangeEvent } from "@mui/material/Select";
+import { Dispatch, SetStateAction } from "react";
 
 export type Categories = {
     id: number,
@@ -39,9 +40,15 @@ export type QuestionCardProps = {
     setDisabled: (value: React.SetStateAction<boolean>) => void;
     selectedAnswer: string | null;
     setSelectedAnswer: (value: React.SetStateAction<string | null>) => void;
+    setQuizPoints: (value: React.SetStateAction<number>) => void;
 }
 
 export type AnswerState = 'correct' | 'incorrect' | 'none';
+
+export enum ResultLabel {
+    balloon= 'balloon',
+    quiz = 'quiz'
+}
 
 export type ResultProps = {
     Points: number;

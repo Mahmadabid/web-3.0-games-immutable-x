@@ -1,37 +1,18 @@
-import { useContext, useEffect } from "react";
-import { PassportContext, LogContext } from "../../utils/Context";
+import { useEffect } from "react";
 import { useAuthentication } from "../../utils/user/userAuthentication";
 
 const Callback = () => {
     const { handleLoginCallback } = useAuthentication();
-    const [Passport] = useContext(PassportContext);
-    const [Log, setLog] = useContext(LogContext);    
-    
+
     useEffect(() => {
-        sessionStorage.setItem('Log', 'success')
 
-        async function finalizeAuthentication() {
-            try {
-                handleLoginCallback();
-                
-                const userProfile = await Passport?.getUserInfo();
-                if (!userProfile) {
-                    setLog(true)
-                } 
-                
-                window.opener?.postMessage({ type: 'authSuccess' }, '*');
+        handleLoginCallback();
 
-                if (sessionStorage.getItem('Log')) {
-                    window.close()
-                    sessionStorage.removeItem('Log')
-                }
-            } catch (error) {
-                console.error("Error during authentication:", error);
-            }
-        }        
+        window.opener?.postMessage({ type: 'authSuccess' }, '*');
 
-        finalizeAuthentication();
-    }, [Log]);
+        window.close();
+
+    }, [handleLoginCallback]);
 
     return <div>Processing...</div>;
 }
