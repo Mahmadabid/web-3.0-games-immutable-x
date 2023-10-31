@@ -1,14 +1,16 @@
 import { ethers } from 'hardhat';
 
 async function main() {
-  const BalloonPointsPurchase = await ethers.getContractFactory('BalloonPointsPurchase');
-  const gasTokenAddress = '0x0000000000000000000000000000000000001010';
-  const recipientAddress = '0xc463B7d21e824AAcCd57Aa70c6E2a490A6e39DCA';
+  const [deployer] = await ethers.getSigners();
 
-  const contract = await BalloonPointsPurchase.deploy(gasTokenAddress, recipientAddress);
-  await contract.deployed();
+  console.log(`Deploying the contract with the account: ${deployer.address}`);
 
-  console.log('BalloonPointsPurchase contract deployed to:', contract.address);
+  const BuyBalloonPoints = await ethers.getContractFactory('BuyBalloonPoints');
+  const buyBalloonPoints = await BuyBalloonPoints.deploy();
+
+  await buyBalloonPoints.deployed();
+
+  console.log(`Contract address: ${buyBalloonPoints.address}`);
 }
 
 main()

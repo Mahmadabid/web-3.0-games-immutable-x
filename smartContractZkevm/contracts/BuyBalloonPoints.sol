@@ -1,19 +1,14 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+contract BuyBalloonPoints {
+    address payable public owner;
 
-contract BalloonPointsPurchase {
-    IERC20 public gasToken;
-    address public recipient;
-
-    constructor(IERC20 _gasToken, address _recipient) {
-        gasToken = _gasToken;
-        recipient = _recipient;
+    constructor() {
+        owner = payable(msg.sender);
     }
 
-    function sendGasTokens(uint256 amount) public {
-        gasToken.transferFrom(msg.sender, recipient, amount);
+    receive() external payable {
+        owner.transfer(msg.value);
     }
 }

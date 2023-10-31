@@ -83,18 +83,22 @@ const market = () => {
         const balance = await Signer[0].getBalance();
         const balanceValue = ethers.utils.formatEther(balance);
 
-        if (parseFloat(balanceValue) === 0.0 || parseFloat(balanceValue) < tokens) {
+        if (parseFloat(balanceValue) === 0.0 || parseFloat(balanceValue) < tokens + 0.01) {
             setTxnError('Your Wallet has less tokens then required. Recharge your wallet to make a transaction.')
             return;
         }
 
-        try {
-            const contract = new ethers.Contract(QuizPointsContractAddress, QuizPointsABI.abi, Signer[0]);
-            const txResponse = await contract.sendGasTokens(tokens);
-            setHash(txResponse.hash);
+        try {            
+            const imx = ethers.utils.parseEther(tokens.toString());
+            const hash =await Signer[0].sendTransaction({
+                to: QuizPointsContractAddress,
+                value: imx,
+              })
+              const receipt = await hash.wait();
+            setHash(receipt.transactionHash);
             QuizPoints[1](prev => prev + tokens === 0.02 ? 1 : tokens === 0.035 ? 2 : tokens === 0.05 ? 3 : 0)
             setSuccess(true);
-            return txResponse.hash;
+            return receipt.transactionHash;
         } catch (error) {
             setTxnError(error.message)
         }
@@ -111,18 +115,22 @@ const market = () => {
         const balance = await Signer[0].getBalance();
         const balanceValue = ethers.utils.formatEther(balance);
 
-        if (parseFloat(balanceValue) === 0.0 || parseFloat(balanceValue) < tokens) {
+        if (parseFloat(balanceValue) === 0.0 || parseFloat(balanceValue) < tokens + 0.001) {
             setTxnError('Your Wallet has less tokens then required. Recharge your wallet to make a transaction.')
             return;
         }
 
         try {
-            const contract = new ethers.Contract(BalloonPointsContractAddress, BalloonPointsABI.abi, Signer[0]);
-            const txResponse = await contract.sendGasTokens(tokens);
-            setHash(txResponse.hash);
-            BalloonPoints[1](prev => prev + tokens === 0.02 ? 1 : tokens === 0.035 ? 2 : tokens === 0.05 ? 3 : 0)
+            const imx = ethers.utils.parseEther(tokens.toString());
+            const hash =await Signer[0].sendTransaction({
+                to: BalloonPointsContractAddress,
+                value: imx,
+              })
+              const receipt = await hash.wait();
+            setHash(receipt.transactionHash);
+            QuizPoints[1](prev => prev + tokens === 0.02 ? 1 : tokens === 0.035 ? 2 : tokens === 0.05 ? 3 : 0)
             setSuccess(true);
-            return txResponse.hash;
+            return receipt.transactionHash;
         } catch (error) {
             setTxnError(error.message)
         }
@@ -206,7 +214,7 @@ const market = () => {
                         }}
                     >
                         <CardContent>
-                            {Hash.length === 0 ? TxnError ?
+                            {Hash?.length === 0 ? TxnError ?
                                 <div className="flex flex-col font-bold items-center justify-center">
                                     <p className="text-xl text-red-600">{TxnError}</p>
                                     <p className="mt-4 text-sky-800 text-xl">Please Try Again</p>
