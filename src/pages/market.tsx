@@ -12,7 +12,7 @@ import { purple } from "@mui/material/colors";
 import { BalloonPointsContractAddress, BalloonPointsABI, QuizPointsABI, QuizPointsContractAddress } from "../components/ContractDetails";
 import { WebEntryData } from "../types/auth";
 
-const market = () => {
+const Market = () => {
     const User = useContext(UserContext);
     const Signer = useContext(SignerContext);
     const PassportInstance = useContext(PassportContext);
@@ -324,4 +324,4 @@ const market = () => {
     );
 }
 
-export default market;
+export default Market;
