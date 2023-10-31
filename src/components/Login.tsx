@@ -1,5 +1,5 @@
 import { useAuthentication } from '../utils/user/userAuthentication';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { UserContext, UserInfoContext } from '../utils/Context';
 import { UserObject } from '../types/auth';
 

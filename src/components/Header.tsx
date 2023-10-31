@@ -57,10 +57,12 @@ const Header = () => {
                     <button onClick={logIn} className="ml-auto pr-2 text-xl inline-block text-white font-bold">Login</button>
                 )}
             </header>
-            {matches && router.pathname === '/' && User ?
+            {router.pathname === '/' && User ?
                 <header className='bg-gradient-to-r from-gray-700 to-blue-600 text-center font-bold text-xl text-white'>
                     <button onClick={() => document.getElementById('quiz')?.scrollIntoView({ behavior: 'smooth' })} className='mx-8 p-1 focus:outline-none'>Quiz <KeyboardDoubleArrowDownIcon /></button>
                     <button onClick={() => document.getElementById('balloon')?.scrollIntoView({ behavior: 'smooth' })} className='mx-8 p-1 focus:outline-none'>Balloon <KeyboardDoubleArrowDownIcon /></button>
+                    <button onClick={() => document.getElementById('mint')?.scrollIntoView({ behavior: 'smooth' })} className='mx-8 p-1 focus:outline-none'>Mint <KeyboardDoubleArrowDownIcon /></button>
+                    <button onClick={() => document.getElementById('market')?.scrollIntoView({ behavior: 'smooth' })} className='mx-8 p-1 focus:outline-none'>Market <KeyboardDoubleArrowDownIcon /></button>
                 </header> : null
             }
         </>

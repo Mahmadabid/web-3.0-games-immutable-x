@@ -1,5 +1,4 @@
 import { SelectChangeEvent } from "@mui/material/Select";
-import { Dispatch, SetStateAction } from "react";
 
 export type Categories = {
     id: number,
@@ -46,7 +45,7 @@ export type QuestionCardProps = {
 export type AnswerState = 'correct' | 'incorrect' | 'none';
 
 export enum ResultLabel {
-    balloon= 'balloon',
+    balloon = 'balloon',
     quiz = 'quiz'
 }
 
@@ -58,4 +57,13 @@ export type BalloonGeneration = {
     top: string;
     left: string;
     color: string;
+}
+
+export interface ProductCardProps {
+    heading: string;
+    price: number;
+    image: string;
+    setBuy: (value: React.SetStateAction<boolean>) => void;
+    setamount: (value: React.SetStateAction<number>) => void;
+    Loading: boolean;
 }

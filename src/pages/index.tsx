@@ -1,12 +1,12 @@
 import { useContext, useEffect } from "react";
 import Cards from '../components/Card'
 import Grid from '@mui/material/Unstable_Grid2';
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, Button, Typography, useMediaQuery } from "@mui/material";
 import { BalloonPointsContext, QuizPointsContext, UserContext, UserInfoContext } from "../utils/Context";
 import Login from "../components/Login";
+import Link from "next/link";
 
 export default function Home() {
-  const matches = useMediaQuery('(max-width:680px)');
   const Style = { backgroundSize: 'cover', backgroundRepeat: 'no-repeat', display: 'flex', alignItems: 'center', justifyContent: 'center' }
   const QuizPoints = useContext(QuizPointsContext)
   const BalloonPoints = useContext(BalloonPointsContext);
@@ -49,11 +49,41 @@ export default function Home() {
             </div>
             <Box sx={{ flexWrap: 'wrap' }}>
               <Grid container justifyContent="center">
-                <Grid id="quiz" xs={6} style={matches ? { ...Style, backgroundImage: 'url(/quiz.jpg)', height: '100vh', width: '100%' } : { ...Style, backgroundImage: 'url(/quiz.jpg)', height: 'calc(100vh - 72px)' }} >
+              <Grid id="quiz" xs={6} style={{ ...Style, backgroundImage: 'url(/quiz.jpg)', height: '100vh', width: '100%' }}>
                   <Cards content="Answer questions and gain points" heading="Quiz Game" points={QuizPoints[0]} UrlLink="/quiz" />
                 </Grid>
-                <Grid id="balloon" xs={6} style={matches ? { ...Style, backgroundImage: 'url(/balloon.jpg)', height: '100vh', width: '100%' } : { ...Style, backgroundImage: 'url(/balloon.jpg)', height: 'calc(100vh - 72px)' }}>
+                <Grid id="balloon" xs={6} style={{ ...Style, backgroundImage: 'url(/balloon.jpg)', height: '100vh', width: '100%' }}>
                   <Cards content="Pop balloons and gain points" heading="Balloon Game" points={BalloonPoints[0]} UrlLink="/balloon" />
+                </Grid>
+                <Grid id="mint" xs={6} style={{ ...Style, backgroundImage: 'url(/mint.jpg)', height: '100vh', width: '100%' }}>
+                  <div className='bg-white rounded p-2 bg-opacity-70'>
+                    <Typography variant="h4" fontWeight={600} color="black">
+                      Mint
+                    </Typography>
+                    <Typography fontWeight="bold" variant="body2" color="text.secondary">
+                      Mint your NFT for points
+                    </Typography>
+                    <Link href="/mint">
+                      <Button variant="contained" style={{ marginTop: 5 }}>
+                        Mint
+                      </Button>
+                    </Link>
+                  </div>
+                </Grid>
+                <Grid id="market" xs={6} style={{ ...Style, backgroundImage: 'url(/mint.jpg)', height: '100vh', width: '100%' }}>
+                  <div className='bg-white rounded p-2 bg-opacity-70'>
+                    <Typography variant="h4" fontWeight={600} color="black">
+                      Market
+                    </Typography>
+                    <Typography fontWeight="bold" variant="body2" color="text.secondary">
+                      A marketplace for web 3.0 games
+                    </Typography>
+                    <Link href="/market">
+                      <Button variant="contained" style={{ marginTop: 5 }}>
+                        Market
+                      </Button>
+                    </Link>
+                  </div>
                 </Grid>
               </Grid>
             </Box>
