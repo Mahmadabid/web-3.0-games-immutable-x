@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { useContext, useEffect } from "react";
 import { BalloonPointsContext, PassportContext, QuizPointsContext, SignerContext, UserContext, UserInfoContext } from "../utils/Context";
 
-const mint = () => {
+const Mint = () => {
 
   const User = useContext(UserContext);
   const Signer = useContext(SignerContext);
@@ -68,4 +68,4 @@ const mint = () => {
   )
 }
 
-export default mint
+export default Mint
