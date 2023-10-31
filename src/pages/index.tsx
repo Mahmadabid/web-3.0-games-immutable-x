@@ -70,7 +70,7 @@ export default function Home() {
                     </Link>
                   </div>
                 </Grid>
-                <Grid id="market" xs={6} style={{ ...Style, backgroundImage: 'url(/mint.jpg)', height: '100vh', width: '100%' }}>
+                <Grid id="market" xs={6} style={{ ...Style, backgroundImage: 'url(/market.jpg)', height: '100vh', width: '100%' }}>
                   <div className='bg-white rounded p-2 bg-opacity-70'>
                     <Typography variant="h4" fontWeight={600} color="black">
                       Market
