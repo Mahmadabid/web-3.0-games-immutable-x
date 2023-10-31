@@ -51,7 +51,7 @@ const Mint = () => {
   }, [UserInfo[0]])
 
   return (
-    <div className="mt-20 flex flex-co; items-center text-center">
+    <div className="mt-20 flex flex-col items-center text-center">
       <h3 className="text-3xl text-slate-600">Mint your NFT</h3>
       <p className="mt-5 text-emerald-800">You can mint yourself an NFT, if you have scored more than 20 points on each game.</p>
       <div className="mt-5 flex flex-row">
@@ -59,11 +59,16 @@ const Mint = () => {
           <h4 className="text-slate-500">Balloon Points</h4>
           <p className="text-xl mt-3">{BalloonPoints[0]}</p>
         </div>
-        <div className="mx-10 rounded border-solid border-x-violet-950 flex flex-col">
+        <div className="mx-10 flex flex-col">
           <h4 className="text-slate-500">Quiz Points</h4>
           <p className="text-xl mt-3">{QuizPoints[0]}</p>
         </div>
       </div>
+      {QuizPoints[0] >= 30 && BalloonPoints[0] > 30 ?
+        <p className="mt-2 text-xl text-green-600">You are quialified to mint. Wait for minting to Launch.</p>
+        :
+        <p className="mt-2 text-xl text-green-600">You need to have more than 30 Points on both games</p>
+      }
     </div>
   )
 }
