@@ -9,7 +9,7 @@ import BalloonIcon from "../components/balloon/BalloonIcon";
 import ProductCard from "../components/market/ProductCard";
 import { Box, Button, Card, CardContent, Grid, Link, styled } from "@mui/material";
 import { purple } from "@mui/material/colors";
-import { BalloonPointsContractAddress, BalloonPointsABI, QuizPointsABI, QuizPointsContractAddress } from "../components/ContractDetails";
+import { BalloonPointsContractAddress, QuizPointsContractAddress } from "../components/ContractDetails";
 import { WebEntryData } from "../types/auth";
 
 const Market = () => {
@@ -25,6 +25,7 @@ const Market = () => {
     const [BalloonBuy, setBalloonBuy] = useState(false);
     const [Hash, setHash] = useState('');
     const [TxnError, setTxnError] = useState('');
+    const [TxSuccess, setTxSuccess] = useState(false);
     const [success, setSuccess] = useState(false);
     const [amount, setamount] = useState(0);
     const [Loading, setLoading] = useState(true);
@@ -88,13 +89,13 @@ const Market = () => {
             return;
         }
 
-        try {            
+        try {
             const imx = ethers.utils.parseEther(tokens.toString());
-            const hash =await Signer[0].sendTransaction({
+            const hash = await Signer[0].sendTransaction({
                 to: QuizPointsContractAddress,
                 value: imx,
-              })
-              const receipt = await hash.wait();
+            })
+            const receipt = await hash.wait();
             setHash(receipt.transactionHash);
             QuizPoints[1](prev => prev + tokens === 0.02 ? 1 : tokens === 0.035 ? 2 : tokens === 0.05 ? 3 : 0)
             setSuccess(true);
@@ -122,14 +123,14 @@ const Market = () => {
 
         try {
             const imx = ethers.utils.parseEther(tokens.toString());
-            const hash =await Signer[0].sendTransaction({
+            const hash = await Signer[0].sendTransaction({
                 to: BalloonPointsContractAddress,
                 value: imx,
-              })
-              const receipt = await hash.wait();
+            })
+            const receipt = await hash.wait();
             setHash(receipt.transactionHash);
             QuizPoints[1](prev => prev + tokens === 0.02 ? 1 : tokens === 0.035 ? 2 : tokens === 0.05 ? 3 : 0)
-            setSuccess(true);
+            setTxSuccess(true);
             return receipt.transactionHash;
         } catch (error) {
             setTxnError(error.message)
@@ -147,7 +148,7 @@ const Market = () => {
     }, [BalloonBuy])
 
     useEffect(() => {
-        if (success) {
+        if (TxSuccess) {
             const dataToSend: WebEntryData = {
                 userId: UserInfo[0]?.profile?.sub || '',
                 data: {
@@ -174,8 +175,9 @@ const Market = () => {
                 }
             };
             sendForm()
+            setSuccess(true)
         }
-    }, [success])
+    }, [TxSuccess])
 
     const quizProducts = [
         { heading: "1 Point", price: 0.02, image: "/quiz1.png" },
@@ -238,12 +240,12 @@ const Market = () => {
                                         </p>
                                     </div>
                                     {success ?
-                                        <div className="flex flex-col justify-center mt-2">
-                                            <p className="text-green-700 my-2">Success</p>
+                                        <div className="flex flex-col text-center justify-center mt-2">
+                                            <p className="text-green-700 text-xl my-2">Success</p>
                                             <Link href="/"><ColorButton variant="contained" size="large">View in main page</ColorButton></Link>
                                         </div> :
                                         <div className="flex text-xl font-bold text-green-800 justify-center mt-2">
-                                            Setting up you points
+                                            Setting up your points
                                             <svg className="animate-spin w-7 h-7 mr-3 fill-slate-800" viewBox="3 3 18 18">
                                                 <path className="opacity-20" d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z">
                                                 </path>

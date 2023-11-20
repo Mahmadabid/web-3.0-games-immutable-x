@@ -3,13 +3,12 @@ import Link from 'next/link';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import { useRouter } from 'next/router';
 import { useAuthentication } from '../utils/user/userAuthentication';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { UserContext, UserInfoContext } from '../utils/Context';
 import { UserObject } from '../types/auth';
 
 const Header = () => {
     const { logIn, logOut } = useAuthentication();
-    const matches = useMediaQuery('(max-width:680px)');
     const router = useRouter();
     const [User, setUser] = useContext(UserContext);
     const [_, setUserInfo] = useContext(UserInfoContext)
