@@ -7,6 +7,7 @@ import Login from "../components/Login";
 import Link from "next/link";
 
 export default function Home() {
+  const matches = useMediaQuery('(max-width:680px)');
   const Style = { backgroundSize: 'cover', backgroundRepeat: 'no-repeat', display: 'flex', alignItems: 'center', justifyContent: 'center' }
   const QuizPoints = useContext(QuizPointsContext)
   const BalloonPoints = useContext(BalloonPointsContext);
@@ -49,13 +50,13 @@ export default function Home() {
             </div>
             <Box sx={{ flexWrap: 'wrap' }}>
               <Grid container justifyContent="center">
-              <Grid id="quiz" xs={6} style={{ ...Style, backgroundImage: 'url(/quiz.jpg)', height: '100vh', width: '100%' }}>
+              <Grid id="quiz" xs={6} style={{ ...Style, backgroundImage: 'url(/quiz.jpg)', height: '100vh', ...(matches ? { width: '100%' } : {}) }}>
                   <Cards content="Answer questions and gain points" heading="Quiz Game" points={QuizPoints[0]} UrlLink="/quiz" />
                 </Grid>
-                <Grid id="balloon" xs={6} style={{ ...Style, backgroundImage: 'url(/balloon.jpg)', height: '100vh', width: '100%' }}>
+                <Grid id="balloon" xs={6} style={{ ...Style, backgroundImage: 'url(/balloon.jpg)', height: '100vh', ...(matches ? { width: '100%' } : {}) }}>
                   <Cards content="Pop balloons and gain points" heading="Balloon Game" points={BalloonPoints[0]} UrlLink="/balloon" />
                 </Grid>
-                <Grid id="mint" xs={6} style={{ ...Style, backgroundImage: 'url(/mint.jpg)', height: '100vh', width: '100%' }}>
+                <Grid id="mint" xs={6} style={{ ...Style, backgroundImage: 'url(/mint.jpg)', height: '100vh', ...(matches ? { width: '100%' } : {}) }}>
                   <div className='bg-white rounded p-2 bg-opacity-70'>
                     <Typography variant="h4" fontWeight={600} color="black">
                       Mint
@@ -70,7 +71,7 @@ export default function Home() {
                     </Link>
                   </div>
                 </Grid>
-                <Grid id="market" xs={6} style={{ ...Style, backgroundImage: 'url(/market.jpg)', height: '100vh', width: '100%' }}>
+                <Grid id="market" xs={6} style={{ ...Style, backgroundImage: 'url(/market.jpg)', height: '100vh', ...(matches ? { width: '100%' } : {}) }}>
                   <div className='bg-white rounded p-2 bg-opacity-70'>
                     <Typography variant="h4" fontWeight={600} color="black">
                       Market
