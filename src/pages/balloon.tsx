@@ -1,9 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import Login from "../components/Login";
 import { BalloonPointsContext, QuizPointsContext, UserContext, UserInfoContext } from "../utils/Context";
-import { Button, ButtonProps, styled } from "@mui/material";
-import { purple } from "@mui/material/colors";
 import BalloonGame from "../components/balloon/BalloonGame";
+import { ColorButton } from "../components/button/ColorButton";
 
 const Balloon = () => {
 
@@ -37,14 +36,6 @@ const Balloon = () => {
       fetchData();
     }
   }, [UserInfo[0]])
-
-  const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
-    color: `${theme.palette.getContrastText(purple[500])} !important`,
-    backgroundColor: `${purple[500]} !important`,
-    '&:hover': {
-      backgroundColor: `${purple[700]} !important`,
-    },
-  }));
 
   const handleStart = () => {
     setStart(true);

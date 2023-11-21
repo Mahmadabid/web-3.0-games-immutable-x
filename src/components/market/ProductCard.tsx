@@ -1,31 +1,12 @@
 import React, { useState } from "react";
 import {
-    Button,
     Card,
     CardContent,
     Typography,
-    styled,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Link,
 } from "@mui/material";
-import { purple, red } from "@mui/material/colors";
 import { ProductCardProps } from "//types/type";
-
-const ColorButton = styled(Button)(({ theme }) => ({
-    color: `${theme.palette.getContrastText(purple[500])} !important`,
-    backgroundColor: `${purple[500]} !important`,
-    "&:hover": {
-        backgroundColor: `${purple[700]} !important`,
-    },
-    "&.Mui-disabled": {
-        backgroundColor: "#E0E0E0 !important",
-        color: "#8C8C8C !important",
-    },
-}));
+import { ColorButton } from "../button/ColorButton";
+import DialogBox from "./DialogBox";
 
 const ProductCard: React.FC<ProductCardProps> = ({
     heading,
@@ -75,21 +56,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                         <ColorButton variant="contained" onClick={handleClickOpen}>
                             Buy
                         </ColorButton>}
-                    <Dialog open={open} onClose={handleClose}>
-                        <DialogTitle>Warning</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText color={red[500]}>
-                                Please keep the window open during purchase, otherwise you might lose funds.
-                            </DialogContentText>
-                        </DialogContent>
-                        <div className="items-center text-center">
-                            <DialogActions>
-                                <ColorButton onClick={handleClose} autoFocus>
-                                    OK
-                                </ColorButton>
-                            </DialogActions>
-                        </div>
-                    </Dialog>
+                    <DialogBox open={open} handleClose={handleClose} />
                 </CardContent>
             </Card>
         </>

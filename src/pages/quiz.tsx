@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from "react";
 import { CategoryFetcher, defaultQuizData, fetchQuizData } from "../utils/QuizApi"
 import SelectForm from "../components/quiz/Select";
-import { Button, ButtonProps, SelectChangeEvent, styled } from "@mui/material";
+import { SelectChangeEvent} from "@mui/material";
 import { CategoryObj, Questions } from "../types/type";
-import { purple } from "@mui/material/colors";
 import Question from "../components/quiz/Question";
 import { BalloonPointsContext, QuizPointsContext, UserContext, UserInfoContext } from "../utils/Context";
 import Login from "../components/Login";
+import { ColorButton } from "../components/button/ColorButton";
 
 const Quiz = () => {
 
@@ -90,18 +90,6 @@ const Quiz = () => {
     fetchData();
 
   }, []);
-
-  const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
-    color: `${theme.palette.getContrastText(purple[500])} !important`,
-    backgroundColor: `${purple[500]} !important`,
-    '&:hover': {
-      backgroundColor: `${purple[700]} !important`,
-    },
-    '&.Mui-disabled': {
-      backgroundColor: '#E0E0E0 !important',
-      color: '#8C8C8C !important',
-    }
-  }));
 
   return (
     <div className="text-center">

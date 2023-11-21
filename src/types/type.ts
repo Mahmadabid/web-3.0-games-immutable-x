@@ -67,3 +67,8 @@ export interface ProductCardProps {
     setamount: (value: React.SetStateAction<number>) => void;
     Loading: boolean;
 }
+
+export type DialogProps = {
+    open: boolean;
+    handleClose: () => void;
+}

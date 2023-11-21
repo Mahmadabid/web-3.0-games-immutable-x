@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react"
 import { QuestionProp } from "../../types/type"
-import { Button, ButtonProps, styled } from "@mui/material"
-import { purple } from "@mui/material/colors"
+import { Button } from "@mui/material"
 import QuestionCard from "./QuestionCard"
 import Result from "../Result"
 import { WebEntryData } from "../../types/auth"
 import { UserInfoContext, QuizPointsContext, BalloonPointsContext } from "../../utils/Context"
+import { ColorButton } from "../button/ColorButton"
 
 const Question: React.FC<QuestionProp> = ({ quizData, handleDefaultStart }) => {
 
@@ -23,18 +23,6 @@ const Question: React.FC<QuestionProp> = ({ quizData, handleDefaultStart }) => {
 
   const QuizQuestions = quizData[questionNo];
   const [Points, setPoints] = useState(0);
-
-  const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
-    color: `${theme.palette.getContrastText(purple[500])} !important`,
-    backgroundColor: `${purple[500]} !important`,
-    '&:hover': {
-      backgroundColor: `${purple[700]} !important`,
-    },
-    '&.Mui-disabled': {
-      backgroundColor: '#E0E0E0 !important',
-      color: '#8C8C8C !important',
-    }
-  }));
 
   const handleSubmit = () => {
     setAnswered(false);

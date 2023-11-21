@@ -7,10 +7,10 @@ import React from "react";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import BalloonIcon from "../components/balloon/BalloonIcon";
 import ProductCard from "../components/market/ProductCard";
-import { Box, Button, Card, CardContent, Grid, Link, styled } from "@mui/material";
-import { purple } from "@mui/material/colors";
+import { Box, Card, CardContent, Grid, Link } from "@mui/material";
 import { BalloonPointsContractAddress, QuizPointsContractAddress } from "../components/ContractDetails";
 import { WebEntryData } from "../types/auth";
+import { ColorButton } from "../components/button/ColorButton";
 
 const Market = () => {
     const User = useContext(UserContext);
@@ -190,18 +190,6 @@ const Market = () => {
         { heading: "2 Points", price: 0.035, image: "/balloon2.png" },
         { heading: "3 Points", price: 0.05, image: "/balloon3.png" },
     ];
-
-    const ColorButton = styled(Button)(({ theme }) => ({
-        color: `${theme.palette.getContrastText(purple[500])} !important`,
-        backgroundColor: `${purple[500]} !important`,
-        "&:hover": {
-            backgroundColor: `${purple[700]} !important`,
-        },
-        "&.Mui-disabled": {
-            backgroundColor: "#E0E0E0 !important",
-            color: "#8C8C8C !important",
-        },
-    }));
 
     return (
         <>
