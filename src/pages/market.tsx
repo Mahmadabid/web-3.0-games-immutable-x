@@ -98,7 +98,7 @@ const Market = () => {
             const receipt = await hash.wait();
             setHash(receipt.transactionHash);
             QuizPoints[1](prev => prev + tokens === 0.02 ? 1 : tokens === 0.035 ? 2 : tokens === 0.05 ? 3 : 0)
-            setSuccess(true);
+            setTxSuccess(true);
             return receipt.transactionHash;
         } catch (error) {
             setTxnError(error.message)
