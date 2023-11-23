@@ -95,42 +95,12 @@ const Mint = () => {
     }
   };
   
-  const handlesMint = async () => {
-  try {
-    const contractAddress = nftaddress;
-    const contract = new ethers.Contract(
-      contractAddress,
-      ['function safeMint(address to, string uri, string password)'],
-      Signer[0] ? Signer[0] : undefined
-    );
-
-    const gasLimit = ethers.utils.parseUnits('100', 'gwei');
-
-    const transaction = await contract.safeMint(
-      address,
-      process.env.NEXT_PUBLIC_URI,
-      process.env.NEXT_PUBLIC_MINTING_PASSWORD,
-      {
-        gasLimit: gasLimit,
-      }
-    );
-
-    await transaction.wait();
-    setHash(transaction.hash);
-    setTxSuccess(true);
-  } catch (error) {
-    console.error('Minting error:', error);
-    setTxnError('Failed to mint NFT');
-  }
-};
-
-  
   useEffect(() => {
     if (!mint) return;
     handleMint();
   }, [mint])
 
-  const handlePoints = () => {
+  const handlePoints = async () => {
     const dataToSend: WebEntryData = {
       userId: UserInfo[0]?.profile?.sub || '',
       data: {
@@ -156,14 +126,15 @@ const Mint = () => {
         console.error('Error:', error);
       }
     };
-    sendForm()
+    await sendForm()
   }
 
   useEffect(() => {
-    if (!TxSuccess) return;
-    handlePoints();
-    setSuccess(true)
-  }, [TxSuccess])
+    if (TxSuccess) {
+      handlePoints();
+      setSuccess(true);
+    }
+  }, [TxSuccess]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -213,7 +184,7 @@ const Mint = () => {
                 </div>
                 {success ? (
                   <div className="flex flex-col text-center justify-center mt-2">
-                    <p className="text-green-700 text-xl my-2">Success</p>
+                    <p className="text-green-700 text-xl font-bold my-2">Success</p>
                     <Link href="/">
                       <ColorButton variant="contained" size="large">View in main page</ColorButton>
                     </Link>
