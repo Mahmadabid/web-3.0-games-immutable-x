@@ -25,6 +25,8 @@ const Mint = () => {
   const [TxSuccess, setTxSuccess] = useState(false);
   const [success, setSuccess] = useState(false);
   const [Loading, setLoading] = useState(true);
+  const [OwnLoading, setOwnLoading] = useState(true);
+  const [owned, setOwned] = useState(0)
 
   useEffect(() => {
     async function getWallet() {
@@ -33,9 +35,29 @@ const Mint = () => {
       const provider = new ethers.providers.Web3Provider(Provider);
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
-      setAddress(await signer.getAddress());
+      const address = await signer.getAddress();
+      setAddress(address);
       Signer[1](signer);
-      setLoading(false)
+      setLoading(false);
+      try {
+        const contractAddress = nftaddress;
+        const contractAbi = NFTABI.abi;
+
+        if (!signer) {
+          console.error('Signer not available');
+          return;
+        }
+
+        const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+
+        const targetAddress = address;
+
+        const balance = await contract.balanceOf(targetAddress);
+        setOwned(balance);
+        setOwnLoading(false);
+      } catch (error) {
+        console.error('Error fetching NFTs:', error);
+      }
     }
 
     getWallet();
@@ -70,13 +92,13 @@ const Mint = () => {
     try {
       const contractAddress = nftaddress;
       const contractAbi = NFTABI.abi;
-  
+
       const signer = Signer[0] ? Signer[0] : undefined;
-  
+
       const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-  
+
       const gasLimit = ethers.utils.parseUnits('100', 'gwei');
-  
+
       const transaction = await contract.safeMint(
         address,
         process.env.NEXT_PUBLIC_URI,
@@ -85,7 +107,7 @@ const Mint = () => {
           gasLimit: gasLimit,
         }
       );
-  
+
       await transaction.wait();
       setHash(transaction.hash);
       setTxSuccess(true);
@@ -94,7 +116,7 @@ const Mint = () => {
       setTxnError('Failed to mint NFT');
     }
   };
-  
+
   useEffect(() => {
     if (!mint) return;
     handleMint();
@@ -206,7 +228,19 @@ const Mint = () => {
         </Card>
       </div>
     ) : (
-      <div className="mt-20 flex flex-col items-center text-center">
+      <div className="mt-10 flex flex-col items-center text-center">
+        <h3 className="text-3xl text-slate-600">Inventory</h3>
+        {OwnLoading ?
+          <svg className="animate-spin w-7 h-7 mt-1 mb-3 fill-slate-800" viewBox="3 3 18 18">
+            <path className="opacity-20" d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z">
+            </path>
+            <path d="M16.9497 7.05015C14.2161 4.31648 9.78392 4.31648 7.05025 7.05015C6.65973 7.44067 6.02656 7.44067 5.63604 7.05015C5.24551 6.65962 5.24551 6.02646 5.63604 5.63593C9.15076 2.12121 14.8492 2.12121 18.364 5.63593C18.7545 6.02646 18.7545 6.65962 18.364 7.05015C17.9734 7.44067 17.3403 7.44067 16.9497 7.05015Z">
+            </path>
+          </svg> :
+          <p className="mt-1 mb-3 text-emerald-700 font-medium">You own {owned.toString()} NFTs</p>
+        }{parseInt(owned.toString()) > 0 ?
+          <img src="/gameWinner.png" alt="Game Winner" className="my-3 w-80" />
+          : null}
         <h3 className="text-3xl text-slate-600">Mint your NFT</h3>
         <p className="mt-5 text-emerald-800">You can mint yourself an NFT if you have scored more than 30 points on each game.</p>
         <div className="mt-5 flex flex-row">
@@ -233,11 +267,11 @@ const Mint = () => {
                 </svg>
               </div> :
               <button onClick={handleClickOpen} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 my-2 focus:outline-none">Mint</button>}
-        <DialogBox open={open} handleClose={handleClose} />
+            <DialogBox open={open} handleClose={handleClose} />
             <DialogBox open={open} handleClose={handleClose} />
           </div>
         ) : (
-          <p className="mt-2 text-xl text-green-600">You need to have more than 30 Points on both games</p>
+          <p className="mt-2 mb-6 text-xl text-green-600">You need to have more than 30 Points on both games</p>
         )}
       </div>
     )
