@@ -6,7 +6,7 @@ import DialogBox from "../components/market/DialogBox";
 import { ColorButton } from "../components/button/ColorButton";
 import { Card, CardContent } from "@mui/material";
 import Link from "next/link";
-import { nftaddress } from "../components/ContractDetails";
+import { NFTABI, nftaddress } from "../components/ContractDetails";
 
 const Mint = () => {
 
@@ -24,6 +24,7 @@ const Mint = () => {
   const [TxnError, setTxnError] = useState('');
   const [TxSuccess, setTxSuccess] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [Loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getWallet() {
@@ -34,6 +35,7 @@ const Mint = () => {
       const signer = provider.getSigner();
       setAddress(await signer.getAddress());
       Signer[1](signer);
+      setLoading(false)
     }
 
     getWallet();
@@ -66,9 +68,24 @@ const Mint = () => {
 
   const handleMint = async () => {
     try {
-      const contractAddress = nftaddress
-      const contract = new ethers.Contract(contractAddress, ['function safeMint(address to, string uri, string password)'], Signer[0]? Signer[0]: undefined);
-      const transaction = await contract.safeMint( address, process.env.NEXT_PUBLIC_URI, process.env.MINTING_PASSWORD);
+      const contractAddress = nftaddress;
+      const contractAbi = NFTABI.abi;
+  
+      const signer = Signer[0] ? Signer[0] : undefined;
+  
+      const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+  
+      const gasLimit = ethers.utils.parseUnits('100', 'gwei');
+  
+      const transaction = await contract.safeMint(
+        address,
+        process.env.NEXT_PUBLIC_URI,
+        process.env.NEXT_PUBLIC_MINTING_PASSWORD,
+        {
+          gasLimit: gasLimit,
+        }
+      );
+  
       await transaction.wait();
       setHash(transaction.hash);
       setTxSuccess(true);
@@ -77,6 +94,36 @@ const Mint = () => {
       setTxnError('Failed to mint NFT');
     }
   };
+  
+  const handlesMint = async () => {
+  try {
+    const contractAddress = nftaddress;
+    const contract = new ethers.Contract(
+      contractAddress,
+      ['function safeMint(address to, string uri, string password)'],
+      Signer[0] ? Signer[0] : undefined
+    );
+
+    const gasLimit = ethers.utils.parseUnits('100', 'gwei');
+
+    const transaction = await contract.safeMint(
+      address,
+      process.env.NEXT_PUBLIC_URI,
+      process.env.NEXT_PUBLIC_MINTING_PASSWORD,
+      {
+        gasLimit: gasLimit,
+      }
+    );
+
+    await transaction.wait();
+    setHash(transaction.hash);
+    setTxSuccess(true);
+  } catch (error) {
+    console.error('Minting error:', error);
+    setTxnError('Failed to mint NFT');
+  }
+};
+
   
   useEffect(() => {
     if (!mint) return;
@@ -204,7 +251,18 @@ const Mint = () => {
         {QuizPoints[0] >= 30 && BalloonPoints[0] > 30 ? (
           <div>
             <p className="mt-2 text-xl text-green-600">You are qualified to mint</p>
-            <button onClick={handleClickOpen} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 my-2 focus:outline-none">Mint</button>
+            {Loading ?
+              <div className="flex flex-col text-center items-center">
+                <p className="text-xl mt-2 text-red-500">Loading! It will take few seconds</p>
+                <svg className="animate-spin w-7 h-7 mt-6 fill-slate-800" viewBox="3 3 18 18">
+                  <path className="opacity-20" d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z">
+                  </path>
+                  <path d="M16.9497 7.05015C14.2161 4.31648 9.78392 4.31648 7.05025 7.05015C6.65973 7.44067 6.02656 7.44067 5.63604 7.05015C5.24551 6.65962 5.24551 6.02646 5.63604 5.63593C9.15076 2.12121 14.8492 2.12121 18.364 5.63593C18.7545 6.02646 18.7545 6.65962 18.364 7.05015C17.9734 7.44067 17.3403 7.44067 16.9497 7.05015Z">
+                  </path>
+                </svg>
+              </div> :
+              <button onClick={handleClickOpen} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 my-2 focus:outline-none">Mint</button>}
+        <DialogBox open={open} handleClose={handleClose} />
             <DialogBox open={open} handleClose={handleClose} />
           </div>
         ) : (
