@@ -94,14 +94,14 @@ const Market = () => {
             const gasLimit = ethers.utils.parseUnits('100', 'gwei');
 
             const hash = await Signer[0].sendTransaction({
-              to: QuizPointsContractAddress,
-              value: imx,
-              gasLimit: gasLimit,
+                to: QuizPointsContractAddress,
+                value: imx,
+                gasLimit: gasLimit,
             });
 
             const receipt = await hash.wait();
             setHash(receipt.transactionHash);
-            BalloonPoints[1](prev => prev + (tokens === 0.02 ? 1 : tokens === 0.035 ? 2 : tokens === 0.05 ? 3 : 0))
+            QuizPoints[1](prev => prev + (tokens === 0.02 ? 1 : tokens === 0.035 ? 2 : tokens === 0.05 ? 3 : 0))
             setTxSuccess(true);
             return receipt.transactionHash;
         } catch (error) {
