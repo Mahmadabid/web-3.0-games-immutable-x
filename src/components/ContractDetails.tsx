@@ -1,6 +1,6 @@
-export const QuizPointsContractAddress = "0x59aBa39E1d597eff4757743b26b68803c5A8dd8b"
+export const QuizPointsContractAddress = "0x3E175B89C854Be541d6124803F9668d96d19d5cf"
 
-export const BalloonPointsContractAddress = "0xae2ACA0758F61460f8Def7F90C1ea53Ae0461dE4"
+export const BalloonPointsContractAddress = "0xD907Aa5F81d4D2003B7fBffEf9F60cE5cAa90734"
 
 export const nftaddress = '0x73ebeB205Bc07ab3cF228A7426Be47211B1ba23e'
 

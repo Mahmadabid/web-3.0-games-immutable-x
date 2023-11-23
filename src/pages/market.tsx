@@ -91,13 +91,17 @@ const Market = () => {
 
         try {
             const imx = ethers.utils.parseEther(tokens.toString());
+            const gasLimit = ethers.utils.parseUnits('100', 'gwei');
+
             const hash = await Signer[0].sendTransaction({
-                to: QuizPointsContractAddress,
-                value: imx,
-            })
+              to: QuizPointsContractAddress,
+              value: imx,
+              gasLimit: gasLimit,
+            });
+
             const receipt = await hash.wait();
             setHash(receipt.transactionHash);
-            QuizPoints[1](prev => prev + tokens === 0.02 ? 1 : tokens === 0.035 ? 2 : tokens === 0.05 ? 3 : 0)
+            BalloonPoints[1](prev => prev + (tokens === 0.02 ? 1 : tokens === 0.035 ? 2 : tokens === 0.05 ? 3 : 0))
             setTxSuccess(true);
             return receipt.transactionHash;
         } catch (error) {
@@ -123,13 +127,16 @@ const Market = () => {
 
         try {
             const imx = ethers.utils.parseEther(tokens.toString());
+            const gasLimit = ethers.utils.parseUnits('100', 'gwei');
+
             const hash = await Signer[0].sendTransaction({
                 to: BalloonPointsContractAddress,
                 value: imx,
+                gasLimit: gasLimit,
             })
             const receipt = await hash.wait();
             setHash(receipt.transactionHash);
-            QuizPoints[1](prev => prev + tokens === 0.02 ? 1 : tokens === 0.035 ? 2 : tokens === 0.05 ? 3 : 0)
+            BalloonPoints[1](prev => prev + (tokens === 0.02 ? 1 : tokens === 0.035 ? 2 : tokens === 0.05 ? 3 : 0))
             setTxSuccess(true);
             return receipt.transactionHash;
         } catch (error) {
@@ -229,7 +236,7 @@ const Market = () => {
                                     </div>
                                     {success ?
                                         <div className="flex flex-col text-center justify-center mt-2">
-                                            <p className="text-green-700 text-xl my-2">Success</p>
+                                            <p className="text-green-700 text-xl font-bold my-2">Success</p>
                                             <Link href="/"><ColorButton variant="contained" size="large">View in main page</ColorButton></Link>
                                         </div> :
                                         <div className="flex text-xl font-bold text-green-800 justify-center mt-2">

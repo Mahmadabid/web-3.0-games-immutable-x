@@ -6,7 +6,9 @@ async function main() {
   console.log(`Deploying the contract with the account: ${deployer.address}`);
 
   const BuyBalloonPoints = await ethers.getContractFactory('BuyBalloonPoints');
-  const buyBalloonPoints = await BuyBalloonPoints.deploy();
+  const deploymentOptions = { gasPrice: ethers.utils.parseUnits('100', 'gwei') };
+
+  const buyBalloonPoints = await BuyBalloonPoints.deploy(deploymentOptions);
 
   await buyBalloonPoints.deployed();
 
