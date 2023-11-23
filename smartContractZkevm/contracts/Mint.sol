@@ -16,7 +16,6 @@ contract Mint is ERC721, ERC721URIStorage, Ownable {
     }
 
     function safeMint(address to, string memory uri, string memory password) public {
-        // Check if the provided password is correct
         require(keccak256(abi.encodePacked(password)) == keccak256(abi.encodePacked(mintingPassword)), "Incorrect password");
 
         uint256 tokenId = _nextTokenId++;
@@ -24,7 +23,9 @@ contract Mint is ERC721, ERC721URIStorage, Ownable {
         _setTokenURI(tokenId, uri);
     }
 
-    // The following functions are overrides required by Solidity.
+    function changePassword(string memory newPassword) public onlyOwner {
+        mintingPassword = newPassword;
+    }
 
     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
